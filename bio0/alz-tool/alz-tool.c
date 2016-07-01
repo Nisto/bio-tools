@@ -438,7 +438,7 @@ void alz_compress(FILE *infile, FILE *outfile, char alz_type)
 
     if (alz.offset != fwrite(alz.buf, 1, alz.offset, outfile))
     {
-        fprintf(stderr, "ERROR: Could not write compressed data.\n");
+        printf("ERROR: Could not write compressed data.\n");
         exit(EXIT_FAILURE);
     }
 
