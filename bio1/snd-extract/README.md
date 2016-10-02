@@ -2,7 +2,7 @@
 This tool extracts the MusyX containers stored in the .snd files in Biohazard (GC).
 
 ### Prerequisites
-Python
+Python 2.x or 3.x
 
 ### Usage
 Pass a .snd file or a directory containing .snd files to the program (alternatively, drag and drop, if supported on your system)
