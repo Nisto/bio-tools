@@ -181,14 +181,20 @@ uint16_t alz_get_varlen_value(bitstream *bs)
 
 void alz_put_varlen_value(bitstream *bs, uint16_t x)
 {
-    if (x >= 64)
-        put_bits(bs, 14, (x << 4) | (1 << 3));
-    else if (x >= 16)
-        put_bits(bs, 9, (x << 3) | (1 << 2));
-    else if (x >= 4)
-        put_bits(bs, 6, (x << 2) | (1 << 1));
-    else
-        put_bits(bs, 3, (x << 1) | (1 << 0));
+    uint8_t i = 0;
+
+    while (x >> alz_bitcounts[i])
+    {
+        ++i;
+
+        if (i >= sizeof(alz_bitcounts))
+        {
+            printf("ERROR: 0x%08" PRIX32 "@%" PRIu8 ": value too large: %" PRIu16 "\n", bs->offset, bs->bitnum, x);
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    put_bits(bs, alz_bitcounts[i]+1+i, (x<<(1+i)) | (1<<i));
 }
 
 void alz_decompress(FILE *infile, FILE *outfile)
